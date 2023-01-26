@@ -1,10 +1,9 @@
-package com.agenda.domain.entity.service;
+package com.agenda.domain.service;
 
 
 import com.agenda.domain.entity.Paciente;
-import com.agenda.domain.entity.repository.PacienteRepository;
+import com.agenda.domain.repository.PacienteRepository;
 import com.agenda.exception.BusinessException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

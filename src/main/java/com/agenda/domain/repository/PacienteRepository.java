@@ -1,4 +1,4 @@
-package com.agenda.domain.entity.repository;
+package com.agenda.domain.repository;
 
 import com.agenda.domain.entity.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
