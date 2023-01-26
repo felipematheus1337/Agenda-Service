@@ -3,6 +3,7 @@ package com.agenda.domain.entity.service;
 
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.entity.repository.PacienteRepository;
+import com.agenda.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,21 @@ public class PacienteService {
     private final PacienteRepository repository;
 
     public Paciente salvar(Paciente paciente) {
-     if(!buscarPorCpf(paciente.getCpf())) {
-         return repository.save(paciente);
+     boolean existeCpf = false;
+     var optPaciente = repository.findByCpf(paciente.getCpf());
+
+     if(optPaciente.isPresent()) {
+         if(!optPaciente.get().getId().equals(paciente.getId())) {
+             existeCpf = true;
+         }
      }
-     return null;
+
+     if(existeCpf) {
+         throw new BusinessException("Cpf já cadastrado!");
+     }
+
+     return repository.save(paciente);
+
     }
 
     public void deletar(Long id) {
@@ -37,9 +49,7 @@ public class PacienteService {
       return repository.findById(id);
     }
 
-    private Boolean buscarPorCpf(String cpf) {
-       return repository.findByCpf(cpf).isPresent();
-    }
+
 
 
 
