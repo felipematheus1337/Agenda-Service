@@ -19,7 +19,10 @@ public class PacienteService {
     private final PacienteRepository repository;
 
     public Paciente salvar(Paciente paciente) {
-     return repository.save(paciente);
+     if(!buscarPorCpf(paciente.getCpf())) {
+         return repository.save(paciente);
+     }
+     return null;
     }
 
     public void deletar(Long id) {
@@ -32,6 +35,10 @@ public class PacienteService {
 
     public Optional<Paciente> buscarPorId(Long id) {
       return repository.findById(id);
+    }
+
+    private Boolean buscarPorCpf(String cpf) {
+       return repository.findByCpf(cpf).isPresent();
     }
 
 
