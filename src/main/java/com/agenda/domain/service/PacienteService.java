@@ -49,7 +49,15 @@ public class PacienteService {
     }
 
 
+    public Paciente alterar(Long id, Paciente paciente) {
+        var optPaciente = this.buscarPorId(id);
 
+        if(optPaciente.isEmpty()) {
+            throw new BusinessException("Paciente não cadastrado!");
+        }
 
+        paciente.setId(id);
 
+        return salvar(paciente);
+    }
 }
