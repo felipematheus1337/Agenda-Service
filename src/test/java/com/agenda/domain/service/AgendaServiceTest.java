@@ -103,6 +103,18 @@ class AgendaServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Quando buscar por Id inexistente, retornar optional nulo")
+    void buscarPorIdEntãoRetornarOptionalNullable() {
+        Long searchId = 50L;
+        Mockito.when(repository.findById(searchId)).thenReturn(Optional.empty());
+        Assertions.assertThat(service.buscarPorId(searchId)).isEqualTo(Optional.empty());
+
+
+
+
+
+    }
 
 
 
