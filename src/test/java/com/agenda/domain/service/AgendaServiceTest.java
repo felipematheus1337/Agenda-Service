@@ -11,8 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,6 +38,47 @@ class AgendaServiceTest {
 
     @Captor
     ArgumentCaptor<Agenda> agendaCaptor;
+
+    @Captor
+    ArgumentCaptor<List<Agenda>> listAgendaCaptor;
+
+
+    @Test
+    @DisplayName("Deve listar todos os agendamentos")
+    void deveListarTodosOsAgendamentosComSucesso() {
+
+        List<Agenda> agendaList = Arrays.asList(
+                new Agenda(1L,"Agenda 1 teste",
+                        LocalDateTime.now(),null,
+                        new Paciente(1L,"paciente1 teste",
+                                "paciente1 sobrenome teste",
+                                "paciente1@mail.com",
+                                "305.162.980-46")),
+                        new Agenda(2L,"Agenda 2 teste",
+                                LocalDateTime.now(),null,
+                                new Paciente(1L,"paciente2 teste",
+                                        "paciente2 sobrenome teste",
+                                        "paciente2@mail.com",
+                                        "146.844.230-93")
+                        )
+        );
+
+        Mockito.when(repository.findAll()).thenReturn(agendaList);
+
+
+        var lista = service.listarTodos();
+
+        Assertions.assertThat(lista).isNotNull();
+        Assertions.assertThat(lista.get(0).getId()).isEqualTo(1L);
+        Assertions.assertThat(lista.get(1).getId()).isEqualTo(2L);
+
+
+    }
+
+
+
+
+
 
     @Test
     @DisplayName("Deve salvar agendamento com sucesso")
@@ -124,7 +168,7 @@ class AgendaServiceTest {
         // assert
 
         Assertions.assertThat(exception.getMessage()).isEqualTo("Já existe agendamento para este horário");
-        
+
 
 
 
