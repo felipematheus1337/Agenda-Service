@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -42,7 +43,7 @@ class PacienteServiceTest {
 
     @Test
     @DisplayName("Listar todos os pacientes com sucesso!")
-    void listarTodos() {
+    void listarTodosComSucesso() {
         List<Paciente> pacienteList = Arrays.asList(
                 new Paciente(1L,"teste1",
                         "sobrenometeste1","teste1@mail.com",
@@ -58,6 +59,19 @@ class PacienteServiceTest {
     }
 
     @Test
-    void buscarPorId() {
+    void buscarPorIdComSucesso() {
+        Long searchId = 1L;
+        Paciente pacienteTeste = new Paciente(searchId,
+                "teste","sobreteste",
+                "teste@mail.com","785.307.580-48");
+        Mockito.when(repository.findById(searchId)).thenReturn(Optional.of(pacienteTeste));
+
+
+       var optPaciente =  service.buscarPorId(searchId);
+       verify(repository).findById(searchId);
+       assertEquals(optPaciente.get().getId(),searchId);
+       assertEquals(optPaciente.get().getClass(),Paciente.class);
+
+
     }
 }
