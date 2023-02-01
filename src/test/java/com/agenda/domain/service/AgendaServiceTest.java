@@ -76,6 +76,32 @@ class AgendaServiceTest {
     }
 
 
+    @Test
+    @DisplayName("Quando buscar por ID Encontrar um agendamento")
+    void buscarPorIdEntaoRetornarUmAgendamento() {
+        Long searchId = 1L;
+        var optAgenda = Optional.of( new Agenda(1L,"Agenda 1 teste",
+                LocalDateTime.now(),null,
+                new Paciente(1L,"paciente1 teste",
+                        "paciente1 sobrenome teste",
+                        "paciente1@mail.com",
+                        "305.162.980-46")));
+
+        Mockito.when(repository.findById(searchId)).thenReturn(optAgenda);
+        var optAgendaTeste = service.buscarPorId(searchId);
+
+        Assertions.assertThat(optAgendaTeste.isEmpty()).isEqualTo(false);
+        Assertions.assertThat(optAgendaTeste.get().getClass()).isEqualTo(Agenda.class);
+        Assertions.assertThat(optAgendaTeste.get().getId()).isEqualTo(searchId);
+
+
+
+
+
+
+
+
+    }
 
 
 
