@@ -1,14 +1,13 @@
 package com.agenda.domain.service;
 
+import com.agenda.domain.entity.Agenda;
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.repository.PacienteRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -28,10 +27,31 @@ class PacienteServiceTest {
     @Mock
     PacienteRepository repository;
 
+    @Captor
+    ArgumentCaptor<Paciente> pacienteCaptor;
+
 
     @Test
-    void salvar() {
+    @DisplayName("Deve salvar paciente com sucesso!")
+    void deveSalvarPacienteComSucesso() {
+        Paciente paciente = new Paciente(1L,"teste",
+                "sobrenome teste",
+                "teste@mail.com","622.192.220-80");
+        boolean cpfExistsTest = false;
+
+        Mockito.when(repository.findByCpf("622.192.220-80")).thenReturn(Optional.of(paciente));
+
+        service.salvar(paciente);
+
+        Mockito.verify(repository).save(pacienteCaptor.capture());
+        Paciente savedPaciente = pacienteCaptor.getValue();
+
+        Assertions.assertEquals(savedPaciente.getClass(),Paciente.class);
+        Assertions.assertEquals(savedPaciente.getId(),paciente.getId());
+
     }
+
+    @Test
 
     @Test
     @DisplayName("Deletar com sucesso paciente!")
@@ -74,4 +94,7 @@ class PacienteServiceTest {
 
 
     }
+
+
+
 }

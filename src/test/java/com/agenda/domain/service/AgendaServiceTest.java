@@ -39,8 +39,6 @@ class AgendaServiceTest {
     @Captor
     ArgumentCaptor<Agenda> agendaCaptor;
 
-    @Captor
-    ArgumentCaptor<List<Agenda>> listAgendaCaptor;
 
 
     @Test
