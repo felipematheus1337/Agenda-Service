@@ -1,10 +1,10 @@
 package com.agenda.domain.service;
 
-import com.agenda.domain.entity.Agenda;
+
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.repository.PacienteRepository;
 import com.agenda.exception.BusinessException;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 class PacienteServiceTest {
@@ -40,15 +43,15 @@ class PacienteServiceTest {
                 "teste@mail.com","622.192.220-80");
         boolean cpfExistsTest = false;
 
-        Mockito.when(repository.findByCpf("622.192.220-80")).thenReturn(Optional.of(paciente));
+        when(repository.findByCpf("622.192.220-80")).thenReturn(Optional.of(paciente));
 
         service.salvar(paciente);
 
-        Mockito.verify(repository).save(pacienteCaptor.capture());
+        verify(repository).save(pacienteCaptor.capture());
         Paciente savedPaciente = pacienteCaptor.getValue();
 
-        Assertions.assertEquals(savedPaciente.getClass(),Paciente.class);
-        Assertions.assertEquals(savedPaciente.getId(),paciente.getId());
+        Assertions.assertThat(savedPaciente.getClass()).isEqualTo(Paciente.class);
+        Assertions.assertThat(savedPaciente.getId()).isEqualTo(paciente.getId());
 
     }
 
@@ -70,6 +73,7 @@ class PacienteServiceTest {
             service.salvar(paciente);
         });
 
+        verify(repository, never()).save(any(Paciente.class));
         assertEquals("Cpf já cadastrado!",exception.getMessage());
 
 
@@ -95,19 +99,20 @@ class PacienteServiceTest {
                         "sobrenometeste2","teste2@mail.com",
                         "089.694.830-71")
         );
-        Mockito.when(repository.findAll()).thenReturn(pacienteList);
+        when(repository.findAll()).thenReturn(pacienteList);
         var listPacientes = service.listarTodos();
-        Assertions.assertEquals(listPacientes.size(),2);
+        assertEquals(listPacientes.size(),2);
 
     }
 
     @Test
+    @DisplayName("Deve retornar um paciente com sucesso")
     void buscarPorIdComSucesso() {
         Long searchId = 1L;
         Paciente pacienteTeste = new Paciente(searchId,
                 "teste","sobreteste",
                 "teste@mail.com","785.307.580-48");
-        Mockito.when(repository.findById(searchId)).thenReturn(Optional.of(pacienteTeste));
+        when(repository.findById(searchId)).thenReturn(Optional.of(pacienteTeste));
 
 
        var optPaciente =  service.buscarPorId(searchId);
@@ -117,6 +122,28 @@ class PacienteServiceTest {
 
 
     }
+
+    @Test
+    @DisplayName("Deve atualizar com sucesso um paciente!")
+    void deveAtualizarComSucessoPaciente() {
+        Long pacienteId = 1L;
+        var paciente = new Paciente();
+        paciente.setId(1L);
+        paciente.setCpf("834.347.440-61");
+        when(service.buscarPorId(pacienteId)).thenReturn(Optional.of(paciente));
+        when(service.salvar(paciente)).thenReturn(paciente);
+
+
+        var pacienteAtualizado = service.alterar(pacienteId ,paciente);
+
+
+       assertEquals(pacienteAtualizado.getCpf(),paciente.getCpf());
+        assertThat(pacienteAtualizado.getId()).isEqualTo(1L);
+
+    }
+
+
+
 
 
 
