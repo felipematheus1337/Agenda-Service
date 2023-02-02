@@ -139,7 +139,24 @@ class PacienteServiceTest {
 
        assertEquals(pacienteAtualizado.getCpf(),paciente.getCpf());
         assertThat(pacienteAtualizado.getId()).isEqualTo(1L);
+    }
 
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar atualizar paciente que não está cadastrado")
+    void deveLancarExcecaoAoAtualizarPacienteNaoCadastrado() {
+        Long searchId = 5L;
+        Paciente paciente = new Paciente();
+        paciente.setId(searchId);
+        paciente.setCpf("11.111.111-11");
+        Mockito.when(service.buscarPorId(searchId)).thenReturn(Optional.empty());
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            service.alterar(searchId,paciente);
+        });
+
+        assertEquals(exception.getMessage(),"Paciente não cadastrado!");
+        verify(repository,never()).save(paciente);
+        verify(repository).findById(5L);
     }
 
 
