@@ -3,6 +3,7 @@ package com.agenda.domain.service;
 import com.agenda.domain.entity.Agenda;
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.repository.PacienteRepository;
+import com.agenda.exception.BusinessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,28 @@ class PacienteServiceTest {
     }
 
     @Test
+    @DisplayName("Deve gerar exceção ao salvar um paciente com cpf já cadastrado")
+    void deveLancarExcecaoAoCadastrarPacienteComCpfJaCadastrado() {
+        Paciente paciente = new Paciente();
+        paciente.setCpf("734.426.970-85");
+        paciente.setId(1L);
+
+        Paciente pacienteExistente = new Paciente();
+        pacienteExistente.setCpf("734.426.970-85");
+        pacienteExistente.setId(2L);
+        var optionalPaciente = Optional.of(pacienteExistente);
+
+        when(repository.findByCpf(paciente.getCpf())).thenReturn(optionalPaciente);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> {
+            service.salvar(paciente);
+        });
+
+        assertEquals("Cpf já cadastrado!",exception.getMessage());
+
+
+
+    }
 
     @Test
     @DisplayName("Deletar com sucesso paciente!")
