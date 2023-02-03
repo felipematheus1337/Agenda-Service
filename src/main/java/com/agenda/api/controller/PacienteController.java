@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/paciente")
@@ -24,13 +27,22 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<PacienteResponse> salvar(@Valid @RequestBody PacienteRequest pacienteRequest) {
-       var pacienteSalvo = service.salvar(pacienteMapper.toPaciente(pacienteRequest));
-       return ResponseEntity.status(HttpStatus.CREATED).body(pacienteMapper.toPacienteResponse(pacienteSalvo));
+       Optional<PacienteResponse> optPaciente = Stream.of(pacienteRequest)
+               .map(req -> pacienteMapper.toPaciente(pacienteRequest))
+               .map(service::salvar)
+               .map(pacienteMapper::toPacienteResponse)
+               .findFirst();
+       return ResponseEntity.status(HttpStatus.CREATED).body(optPaciente.get());
     }
 
     @GetMapping
     public ResponseEntity<List<PacienteResponse>> procurarTodos() {
-        return ResponseEntity.ok(pacienteMapper.toListOfPacienteResponse(service.listarTodos()));
+        var pacienteResponse = service.listarTodos()
+                .stream()
+                .map(pacienteMapper::toPacienteResponse)
+                .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteResponse);
     }
 
     @GetMapping("/{id}")
@@ -38,7 +50,8 @@ public class PacienteController {
      var paciente = service.buscarPorId(id);
 
         return paciente
-                .map(value -> ResponseEntity.status(HttpStatus.OK).body(pacienteMapper.toPacienteResponse(value)))
+                .map(pacienteMapper::toPacienteResponse)
+                .map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
@@ -46,10 +59,12 @@ public class PacienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PacienteResponse> alterar(@PathVariable Long id,@Valid @RequestBody PacienteRequest pacienteRequest) {
-        Paciente paciente = pacienteMapper.toPaciente(pacienteRequest);
-        var pacienteSalvo = service.alterar(id,paciente);
-        PacienteResponse pacienteResponse = pacienteMapper.toPacienteResponse(pacienteSalvo);
-        return ResponseEntity.status(HttpStatus.OK).body(pacienteResponse);
+        var pacienteResponse = Stream.of(pacienteRequest)
+                .map(pacienteMapper::toPaciente)
+                .map(s -> service.alterar(id,s))
+                .map(pacienteMapper::toPacienteResponse)
+                .findFirst();
+        return ResponseEntity.status(HttpStatus.OK).body(pacienteResponse.get());
     }
 
     @DeleteMapping("/{id}")

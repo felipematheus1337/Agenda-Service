@@ -7,12 +7,15 @@ import com.agenda.domain.entity.Agenda;
 import com.agenda.domain.service.AgendaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,8 +29,10 @@ public class AgendaController {
 
     @GetMapping
     public ResponseEntity<List<AgendaResponse>> buscarTodos() {
-        List<Agenda> agendas = service.listarTodos();
-        var agendasList = mapper.toListOfAgendaResponse(agendas);
+         var agendasList = service.listarTodos()
+                .stream()
+                .map(mapper::toAgendaResponse)
+                .toList();
         return ResponseEntity.status(HttpStatus.OK).body(agendasList);
 
 
@@ -35,23 +40,25 @@ public class AgendaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AgendaResponse> buscarPorId(@PathVariable Long id) {
-        Optional<Agenda> optAgenda = service.buscarPorId(id);
 
-        if(optAgenda.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+       var agenda = service.buscarPorId(id);
 
-        AgendaResponse agendaResponse = mapper.toAgendaResponse(optAgenda.get());
-        return ResponseEntity.status(HttpStatus.OK).body(agendaResponse);
+       return agenda
+               .map(mapper::toAgendaResponse)
+               .map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
+               .orElseGet(() -> ResponseEntity.notFound().build());
+
+
     }
 
         @PostMapping
         public ResponseEntity<AgendaResponse> salvar(@Valid @RequestBody AgendaRequest agendaRequest) {
-            Agenda agenda = mapper.toAgenda(agendaRequest);
-            Agenda agendaSalva = service.salvar(agenda);
-            AgendaResponse agendaResponse = mapper.toAgendaResponse(agendaSalva);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(agendaResponse);
+            Optional<AgendaResponse> agendaResponse = Stream.of(agendaRequest)
+                    .map(mapper::toAgenda)
+                    .map(service::salvar)
+                    .map(mapper::toAgendaResponse)
+                    .findFirst();
+            return ResponseEntity.status(HttpStatus.CREATED).body(agendaResponse.get());
 
         }
 }
