@@ -16,7 +16,7 @@ Um sistema de agendamento para pacientes utilizando Spring Boot
 <p>Docker</p>
 <p>PostgreSQL</p>
 
-### Features / Funcionalidades
+## Features / Funcionalidades
 <p>Autenticação com JWT</p>
 <p>Upload de Arquivo TXT/CSV</p>
 <p>Testes Unitários</p>
