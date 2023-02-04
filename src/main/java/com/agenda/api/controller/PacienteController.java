@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/paciente")
+@RequestMapping("api/v1/paciente")
 @RequiredArgsConstructor
 public class PacienteController {
 
