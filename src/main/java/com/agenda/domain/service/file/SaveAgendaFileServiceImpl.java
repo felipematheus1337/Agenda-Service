@@ -1,8 +1,8 @@
-package com.agenda.domain.service.impl;
+package com.agenda.domain.service.file;
 
 import com.agenda.domain.entity.Agenda;
-import com.agenda.domain.service.AgendaService;
 import com.agenda.domain.service.SaveAgendaFileService;
+import com.agenda.domain.service.impl.AgendaServiceImpl;
 import com.agenda.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class SaveAgendaFileServiceImpl  implements SaveAgendaFileService {
 
-    private final AgendaService agendaService;
+    private final AgendaServiceImpl agendaService;
 
     @Override
     public List<Agenda> saveAgendamentos(List<Agenda> agendas) throws IOException {

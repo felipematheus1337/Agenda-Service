@@ -3,6 +3,8 @@ package com.agenda.domain.service;
 import com.agenda.domain.entity.Agenda;
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.repository.AgendaRepository;
+import com.agenda.domain.service.impl.AgendaServiceImpl;
+import com.agenda.domain.service.impl.PacienteServiceImpl;
 import com.agenda.exception.BusinessException;
 
 import org.assertj.core.api.Assertions;
@@ -28,10 +30,10 @@ class AgendaServiceTest {
 
 
     @InjectMocks
-    AgendaService service;
+    AgendaServiceImpl service;
 
     @Mock
-    PacienteService pacienteService;
+    PacienteServiceImpl pacienteService;
 
     @Mock
     AgendaRepository repository;

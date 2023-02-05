@@ -1,21 +1,16 @@
-package com.agenda.domain.service.impl;
+package com.agenda.domain.service.file;
 
 import com.agenda.domain.entity.Agenda;
-import com.agenda.domain.entity.Paciente;
-import com.agenda.domain.service.AgendaService;
 import com.agenda.domain.service.GetAgendaFileService;
-import com.agenda.exception.BusinessException;
+import com.agenda.domain.service.impl.AgendaServiceImpl;
 import com.agenda.exception.WrongValuesOnFileException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +19,7 @@ import java.util.List;
 @Service
 public class GetAgendaFileServiceImpl implements GetAgendaFileService {
 
-    private final AgendaService agendaService;
+    private final AgendaServiceImpl agendaService;
     private final ReadAgendaFileServiceImpl readAgendaFileService;
 
     private final SaveAgendaFileServiceImpl saveAgendaFileService;

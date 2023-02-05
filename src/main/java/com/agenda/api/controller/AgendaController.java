@@ -3,18 +3,16 @@ package com.agenda.api.controller;
 import com.agenda.api.mapper.AgendaMapper;
 import com.agenda.api.request.AgendaRequest;
 import com.agenda.api.response.AgendaResponse;
-import com.agenda.domain.entity.Agenda;
-import com.agenda.domain.service.AgendaService;
+import com.agenda.domain.service.impl.AgendaServiceImpl;
+import com.agenda.domain.service.impl.AgendaServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
@@ -22,7 +20,7 @@ import java.util.stream.Stream;
 @RequestMapping("api/v1/agenda")
 public class AgendaController {
 
-    private final AgendaService service;
+    private final AgendaServiceImpl service;
 
     private final AgendaMapper mapper;
 

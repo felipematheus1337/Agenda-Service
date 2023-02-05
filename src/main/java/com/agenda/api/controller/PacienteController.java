@@ -4,8 +4,8 @@ package com.agenda.api.controller;
 import com.agenda.api.mapper.PacienteMapper;
 import com.agenda.api.request.PacienteRequest;
 import com.agenda.api.response.PacienteResponse;
-import com.agenda.domain.entity.Paciente;
-import com.agenda.domain.service.PacienteService;
+import com.agenda.domain.service.impl.PacienteServiceImpl;
+import com.agenda.domain.service.impl.PacienteServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
@@ -22,7 +21,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class PacienteController {
 
-    private final PacienteService service;
+    private final PacienteServiceImpl service;
     private final PacienteMapper pacienteMapper;
 
     @PostMapping

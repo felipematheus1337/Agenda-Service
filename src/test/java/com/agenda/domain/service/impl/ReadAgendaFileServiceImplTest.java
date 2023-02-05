@@ -1,6 +1,7 @@
 package com.agenda.domain.service.impl;
 
 import com.agenda.domain.entity.Agenda;
+import com.agenda.domain.service.file.ReadAgendaFileServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;

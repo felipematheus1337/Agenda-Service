@@ -3,6 +3,7 @@ package com.agenda.domain.service;
 
 import com.agenda.domain.entity.Paciente;
 import com.agenda.domain.repository.PacienteRepository;
+import com.agenda.domain.service.impl.PacienteServiceImpl;
 import com.agenda.exception.BusinessException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.*;
 class PacienteServiceTest {
 
     @InjectMocks
-    PacienteService service;
+    PacienteServiceImpl service;
 
     @Mock
     PacienteRepository repository;

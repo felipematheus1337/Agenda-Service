@@ -22,4 +22,13 @@ public class Paciente {
     private String email;
 
     private String cpf;
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + "\n"
+                + "Sobrenome: " + sobrenome + "\n"
+                + "E-mail: " + email + "\n"
+                + "CPF : " + cpf;
+
+    }
 }
