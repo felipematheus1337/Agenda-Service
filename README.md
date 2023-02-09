@@ -3,10 +3,10 @@ Um sistema de agendamento para pacientes utilizando Spring Boot
 
 ## Tecnologias Utilizadas
 <div style="display: inline_block" align="left">
- <img alt="lipe-Js" height="40" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-plain.svg">
- <img  alt="lipe--CSS" height="40" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg">
- <img  alt="lipe--CSS" height="40" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg">
- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/>
+ <img alt="lipe-Js" height="55" width="55" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-plain.svg">
+ <img  alt="lipe--CSS" height="55" width="55" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original.svg">
+ <img  alt="lipe--CSS" height="55" width="55" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg">
+ <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="55" height="55"/>
 </div> 
 
 
